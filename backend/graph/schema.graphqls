@@ -1,0 +1,80 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type Menu {
+  locationName: String!
+  locationAddress: String!
+  drinkItems: [DrinkItem!]!
+  foodItems: [FoodItem!]!
+}
+type DrinkItem{
+  name: String!
+  productID: ID!
+  price: Float!
+  currency: String!
+  description: String!
+  sizeOptions: [String]!
+  creamerOptions: [CreamerOption!]!
+  addOn:[AddInItem!]!
+}
+type FoodItem{
+  name: String!
+  productID: ID!
+  description: String!
+  price: Float!
+  currency: String!
+}
+input FoodOrder{
+  name: String!
+  productID: ID!
+  quantity: Int!
+  notes: String!
+}
+input DrinkOrder {
+  name: String!
+  productID: ID!
+  sizeOption: String!
+  creamerOptions: [CreamerOptionInput!]!
+  addOn:[AddInItemInput!]!
+}
+type CreamerOption{
+  name: String!
+  addedPPU: Float!
+}
+input CreamerOptionInput{
+  name: String!
+  addedPPU: Float!
+  quantity:Int!
+}
+type AddInItem{
+  name: String!
+  addedPPU: Float!
+}
+input AddInItemInput{
+  name: String!
+  addedPPU: Float!
+  quantity:Int!
+}
+
+type Order {
+  orderNum: ID!
+  customerName: String!
+  drinksOrdered:[DrinkItem!]!
+  foodItemsOrdered: [FoodItem!]!
+  price: Float!
+  success: Boolean!
+}
+input NewOrder {
+  customerName: String!
+  drinksOrdered:[DrinkOrder!]!
+  foodItemsOrdered: [FoodOrder!]!
+  price: Float!
+}
+type Query {
+  menu(menuID: ID!): Menu
+  price(order: NewOrder!): Float!
+}
+type Mutation{
+  createOrder( input: NewOrder!): Order!
+}
